@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.ToDoListController">
+   <children>
+      <MenuBar layoutY="2.0" prefHeight="40.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="viewAllTasksMenuItem" mnemonicParsing="false" onAction="#viewAllTasksMenuItemClicked" text="Open" />
+                  <MenuItem fx:id="viewCompletedTasksMenuItem" mnemonicParsing="false" onAction="#viewCompletedTasksMenuItemClicked" text="Save" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="View">
+               <items>
+                  <MenuItem fx:id="viewAllTasksMenuItem1" mnemonicParsing="false" onAction="#viewAllTasksMenuItemClicked" text="All" />
+                  <MenuItem fx:id="viewCompletedTasksMenuItem1" mnemonicParsing="false" onAction="#viewCompletedTasksMenuItemClicked" text="Completed" />
+                  <MenuItem fx:id="viewUncompletedTasksMenuItem1" mnemonicParsing="false" onAction="#viewUncompletedTasksMenuItemClicked" text="Incompleted" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem fx:id="viewAllTasksMenuItem11" mnemonicParsing="false" onAction="#viewAllTasksMenuItemClicked" text="Get Help" />
+               </items>
+            </Menu>
+        </menus>
+         <padding>
+            <Insets left="10.0" top="5.0" />
+         </padding>
+      </MenuBar>
+      <VBox layoutY="30.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <children>
+            <TableView fx:id="tableView">
+              <columns>
+                <TableColumn fx:id="itemDescriptionColumn" minWidth="300.0" prefWidth="300.0" text="Item Description" />
+                <TableColumn fx:id="dueDateColumn" minWidth="40.0" prefWidth="40.0" text="Due Date" />
+                  <TableColumn fx:id="statusColumn" minWidth="40.0" prefWidth="40.0" text="Status" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="760.0" spacing="8.0">
+               <children>
+                  <TextField fx:id="descriptionTextField" prefHeight="25.0" prefWidth="338.0" promptText="Item Description" HBox.hgrow="ALWAYS" />
+                  <DatePicker fx:id="dueDatePicker" prefWidth="140.0" promptText="Due Date" />
+                  <ComboBox fx:id="statusComboBox" prefWidth="120.0" promptText="Status" />
+                   
+                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#addButtonClicked" prefWidth="50.0" text="Add" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="30.0" layoutY="327.0" prefHeight="40.0" spacing="10.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="400.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearButtonClicked" prefWidth="80.0" text="Clear" />
+                        <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateButtonClicked" prefWidth="80.0" text="Update" />
+                        <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeButtonClicked" prefHeight="25.0" prefWidth="115.0" text="Remove Item(s)" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="400.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submitButtonClicked" text="Submit" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

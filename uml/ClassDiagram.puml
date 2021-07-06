@@ -1,0 +1,91 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class ListManager{
+    main()
+    start()
+}
+
+class ToDoListMasterController{
+
+    - openMenuItem: MenuItem
+    - saveMenuItem: MenuItem
+    - saveAllMenuItem: MenuItem
+
+    - list: ListView<ToDoList>
+
+    - addNewListButton: Button
+    - editListButton: Button
+
+    + addNewListButtonClicked()
+    + editListButtonClicked()
+    + openMenuItemClicked()
+    + saveAllMenuItemClicked()
+    + saveMenuItemClicked()
+}
+
+class ToDoListController{
+    - ListNameTextFiled: TextField;
+    - errorLabel: Label
+
+    - tableView: TableView<Item>
+    - itemDescriptionColumn: TableColumn<Item, String>
+    - dueDateColumn: TableColumn<Item, LocalDate>
+    - statusColumn: TableColumn<Item, String>
+
+    - descriptionTextField: TextField
+    - dueDatePicker: DatePicker
+    - statusComboBox: ComboBox<String>
+
+    - addButton: Button
+    - clearButton: Button
+    - updateButton: Button
+    - removeButton: Button
+    - submitButton: Button
+
+    - viewAllTasksMenuItem: MenuItem
+    - viewCompletedTasksMenuItem: MenuItem
+    - viewUncompletedTasksMenuItem: MenuItem
+
+    + addButtonClicked()
+    + clearButtonClicked()
+    + updateButtonClicked()
+    + removeButtonClicked()
+    + submitButtonClicked()
+
+    + viewAllTasksMenuItemClicked()
+    + viewCompletedTasksMenuItemClicked()
+    + viewUncompletedTasksMenuItemClicked()
+}
+
+class ToDoList{
+    - ToDoListName : String
+    - ToDoListItems : ObservableList<Item>
+
+    + getToDoListName()
+    + setToDoListName()
+    + getToDoListItems()
+    + setToDoListItems()
+}
+
+class Item{
+    - itemDescription : String
+    - dueDate: LocalDate
+    - status: Boolean
+
+    + setItemDescription()
+    + getItemDescription()
+    + setStatus()
+    + getStatus()
+    + setDueDate()
+    + getDueDate()
+}
+
+javafx.Application <|-- ListManager
+ListManager - ToDoListMasterController
+ToDoListMasterController - ToDoListController
+ToDoListController - ToDoList
+ToDoList - Item
+
+
+@enduml
