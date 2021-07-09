@@ -10,9 +10,9 @@ import javafx.beans.property.SimpleStringProperty;
 import java.time.LocalDate;
 
 public class Item {
-    private SimpleStringProperty itemDescription;
-    private LocalDate dueDate;
-    private SimpleStringProperty status;
+    SimpleStringProperty itemDescription;
+    LocalDate dueDate;
+    SimpleStringProperty status;
 
     public Item(String itemDescription, LocalDate dueDate, String status) {
         this.itemDescription = new SimpleStringProperty(itemDescription);

@@ -5,6 +5,7 @@ package ucf.assignments;
  *  Copyright 2021 Edelis Molina
  */
 
+import com.google.gson.Gson;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -14,10 +15,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ToDoListController implements Initializable {
@@ -109,7 +117,47 @@ public class ToDoListController implements Initializable {
     @FXML
     void menuItemSaveListClicked(ActionEvent event) {
 
+        // For Testing
+        List<Item> allTasks = tableView.getItems();
+
+        for(int i = 0; i < allTasks.size(); i++){
+            System.out.println(allTasks.get(i).getItemDescription());
+        }
+
+        // To save
+        Stage secondaryStage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save ToDo List");
+//        fileChooser.setInitialDirectory(new File(System.getProperty("C:\\Users\\EDELITA\\Desktop\\OOPExercises\\assignment4part2")));
+//
+        File file = fileChooser.showSaveDialog(secondaryStage);
+
+        if(file != null){
+            saveFile(tableView.getItems(), file);
+        }
+
+
     }
+
+    public void saveFile(ObservableList<Item> tasks, File file){
+        try {
+            BufferedWriter outWriter = new BufferedWriter(new FileWriter(file));
+            for(int i = 0; i < tasks.size(); i++){
+                outWriter.write(tasks.get(i).toString());
+                outWriter.newLine();
+            }
+            System.out.println(tasks.toString());
+            outWriter.close();
+
+        } catch (IOException e) {
+            Alert saveAlert = new Alert(Alert.AlertType.ERROR);
+            saveAlert.setHeaderText("A writing error has occurred");
+            saveAlert.showAndWait();
+            e.printStackTrace();
+        }
+    }
+
+
 
     @FXML
     void menuItemGetHelpClicked(ActionEvent event) {
