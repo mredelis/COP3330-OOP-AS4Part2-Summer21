@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.IOException;
 
-public class ListManager extends Application {
+public class ToDoListManager extends Application {
 
     public static void main(String[] args) {
         launch(args);
