@@ -22,106 +22,8 @@ import java.util.ResourceBundle;
 
 public class ToDoListController implements Initializable {
 
-    /*
-
-    @FXML
-    private MenuItem viewAllTasksMenuItem;
-
-    @FXML
-    private MenuItem viewCompletedTasksMenuItem;
-
-    @FXML
-    private MenuItem viewAllTasksMenuItem1;
-
-    @FXML
-    private MenuItem viewCompletedTasksMenuItem1;
-
-    @FXML
-    private MenuItem viewUncompletedTasksMenuItem1;
-
-
-
-    @FXML
-    private TableView<?> tableView;
-
-    @FXML
-    private TableColumn<?, ?> itemDescriptionColumn;
-
-    @FXML
-    private TableColumn<?, ?> dueDateColumn;
-
-    @FXML
-    private TableColumn<?, ?> statusColumn;
-
-    @FXML
-    private TextField descriptionTextField;
-
-    @FXML
-    private DatePicker dueDatePicker;
-
-    @FXML
-    private ComboBox<?> statusComboBox;
-
-    @FXML
-    private Button addButton;
-
-    @FXML
-    private Button clearButton;
-
-    @FXML
-    private Button updateButton;
-
-    @FXML
-    private Button removeButton;
-
-    @FXML
-    private Button submitButton;
-
-    @FXML
-    void addButtonClicked(ActionEvent event) {
-
-    }
-
-    @FXML
-    void clearButtonClicked(ActionEvent event) {
-
-    }
-
-
-
-    @FXML
-    void removeButtonClicked(ActionEvent event) {
-
-    }
-
-    @FXML
-    void submitButtonClicked(ActionEvent event) {
-
-    }
-
-    @FXML
-    void updateButtonClicked(ActionEvent event) {
-
-    }
-
-    @FXML
-    void viewAllTasksMenuItemClicked(ActionEvent event) {
-
-    }
-
-    @FXML
-    void viewCompletedTasksMenuItemClicked(ActionEvent event) {
-
-    }
-
-    @FXML
-    void viewUncompletedTasksMenuItemClicked(ActionEvent event) {
-
-    }
-
-}
-
-     */
+    @FXML private MenuItem menuItemOpenList;
+    @FXML private MenuItem menuItemSaveList;
 
     @FXML
     private MenuItem menuItemGetHelp;
@@ -196,6 +98,16 @@ public class ToDoListController implements Initializable {
 //        itemDescriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
 
+
+    }
+
+    @FXML
+    void menuItemOpenListClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void menuItemSaveListClicked(ActionEvent event) {
 
     }
 
