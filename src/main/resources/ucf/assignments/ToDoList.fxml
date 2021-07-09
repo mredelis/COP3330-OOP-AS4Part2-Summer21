@@ -14,26 +14,26 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.ToDoListController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@caspian.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.ToDoListController">
    <children>
       <MenuBar layoutY="2.0" prefHeight="40.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem fx:id="viewAllTasksMenuItem" mnemonicParsing="false" onAction="#viewAllTasksMenuItemClicked" text="Open" />
-                  <MenuItem fx:id="viewCompletedTasksMenuItem" mnemonicParsing="false" onAction="#viewCompletedTasksMenuItemClicked" text="Save" />
+              <MenuItem fx:id="viewAllTasksMenuItem" mnemonicParsing="false" onAction="#viewAllTasksMenuItemClicked" text="Open a ToDo List" />
+                  <MenuItem fx:id="viewCompletedTasksMenuItem" mnemonicParsing="false" onAction="#viewCompletedTasksMenuItemClicked" text="Save ToDo List" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="View">
                <items>
-                  <MenuItem fx:id="viewAllTasksMenuItem1" mnemonicParsing="false" onAction="#viewAllTasksMenuItemClicked" text="All" />
-                  <MenuItem fx:id="viewCompletedTasksMenuItem1" mnemonicParsing="false" onAction="#viewCompletedTasksMenuItemClicked" text="Completed" />
-                  <MenuItem fx:id="viewUncompletedTasksMenuItem1" mnemonicParsing="false" onAction="#viewUncompletedTasksMenuItemClicked" text="Incompleted" />
+                  <MenuItem fx:id="viewAllTasksMenuItem1" mnemonicParsing="false" onAction="#viewAllTasksMenuItemClicked" text="All Tasks" />
+                  <MenuItem fx:id="viewCompletedTasksMenuItem1" mnemonicParsing="false" onAction="#viewCompletedTasksMenuItemClicked" text="Completed Tasks" />
+                  <MenuItem fx:id="viewUncompletedTasksMenuItem1" mnemonicParsing="false" onAction="#viewUncompletedTasksMenuItemClicked" text="Incompleted Tasks" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
                <items>
-                  <MenuItem fx:id="viewAllTasksMenuItem11" mnemonicParsing="false" onAction="#viewAllTasksMenuItemClicked" text="Get Help" />
+                  <MenuItem fx:id="menuItemGetHelp" mnemonicParsing="false" onAction="#menuItemGetHelpClicked" text="Get Help" />
                </items>
             </Menu>
         </menus>

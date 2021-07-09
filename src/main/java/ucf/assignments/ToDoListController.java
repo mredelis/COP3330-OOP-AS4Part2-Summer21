@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -20,6 +21,110 @@ import java.time.Month;
 import java.util.ResourceBundle;
 
 public class ToDoListController implements Initializable {
+
+    /*
+
+    @FXML
+    private MenuItem viewAllTasksMenuItem;
+
+    @FXML
+    private MenuItem viewCompletedTasksMenuItem;
+
+    @FXML
+    private MenuItem viewAllTasksMenuItem1;
+
+    @FXML
+    private MenuItem viewCompletedTasksMenuItem1;
+
+    @FXML
+    private MenuItem viewUncompletedTasksMenuItem1;
+
+
+
+    @FXML
+    private TableView<?> tableView;
+
+    @FXML
+    private TableColumn<?, ?> itemDescriptionColumn;
+
+    @FXML
+    private TableColumn<?, ?> dueDateColumn;
+
+    @FXML
+    private TableColumn<?, ?> statusColumn;
+
+    @FXML
+    private TextField descriptionTextField;
+
+    @FXML
+    private DatePicker dueDatePicker;
+
+    @FXML
+    private ComboBox<?> statusComboBox;
+
+    @FXML
+    private Button addButton;
+
+    @FXML
+    private Button clearButton;
+
+    @FXML
+    private Button updateButton;
+
+    @FXML
+    private Button removeButton;
+
+    @FXML
+    private Button submitButton;
+
+    @FXML
+    void addButtonClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void clearButtonClicked(ActionEvent event) {
+
+    }
+
+
+
+    @FXML
+    void removeButtonClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void submitButtonClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void updateButtonClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void viewAllTasksMenuItemClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void viewCompletedTasksMenuItemClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void viewUncompletedTasksMenuItemClicked(ActionEvent event) {
+
+    }
+
+}
+
+     */
+
+    @FXML
+    private MenuItem menuItemGetHelp;
 
 
     @FXML
@@ -92,6 +197,14 @@ public class ToDoListController implements Initializable {
 
 
 
+    }
+
+    @FXML
+    void menuItemGetHelpClicked(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Get Help");
+        alert.setHeaderText("Refer to file readme.md in the GitHub Repository for the project");
+        alert.showAndWait();
     }
 
     // Method to create a Task Object and add it to the table

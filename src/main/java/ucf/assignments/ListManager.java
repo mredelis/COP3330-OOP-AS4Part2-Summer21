@@ -27,7 +27,7 @@ public class ListManager extends Application {
             Parent root = FXMLLoader.load(getClass().getResource("ToDoList.fxml"));
 
             Scene scene = new Scene(root);
-
+//            scene.getStylesheets().add("lightBlue.css");
             primaryStage.setScene(scene);
             primaryStage.setTitle("TODO LIST APPLICATION");
             primaryStage.show();
