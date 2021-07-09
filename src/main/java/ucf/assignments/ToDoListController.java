@@ -5,7 +5,6 @@ package ucf.assignments;
  *  Copyright 2021 Edelis Molina
  */
 
-import com.google.gson.Gson;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -17,6 +16,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -33,50 +34,33 @@ public class ToDoListController implements Initializable {
     @FXML private MenuItem menuItemOpenList;
     @FXML private MenuItem menuItemSaveList;
 
-    @FXML
-    private MenuItem menuItemGetHelp;
+    @FXML private MenuItem menuItemGetHelp;
 
 
-    @FXML
-    private TextField ListNameTextFiled;
-    @FXML
-    private Label errorLabel;
+    @FXML private TextField ListNameTextFiled;
+    @FXML private Label errorLabel;
 
-    // Table config
-    @FXML
-    private TableView<Item> tableView;
-    @FXML
-    private TableColumn<Item, String> itemDescriptionColumn;
-    @FXML
-    private TableColumn<Item, LocalDate> dueDateColumn;
-    @FXML
-    private TableColumn<Item, String> statusColumn;
+    @FXML private TableView<Task> tableView;
+    @FXML private TableColumn<Task, String> taskDescriptionColumn;
+    @FXML private TableColumn<Task, LocalDate> dueDateColumn;
+    @FXML private TableColumn<Task, String> statusColumn;
 
-    // Instance variables to create new task
-    @FXML
-    private TextField descriptionTextField;
-    @FXML
-    private DatePicker dueDatePicker;
-    @FXML
-    private ComboBox<String> statusComboBox;
 
-    @FXML
-    private Button addButton;
-    @FXML
-    private Button clearButton;
-    @FXML
-    private Button updateButton;
-    @FXML
-    private Button removeButton;
-    @FXML
-    private Button submitButton;
+    @FXML private TextField descriptionTextField;
+    @FXML private DatePicker dueDatePicker;
+    @FXML private ComboBox<String> statusComboBox;
 
-    @FXML
-    private MenuItem viewAllTasksMenuItem;
-    @FXML
-    private MenuItem viewCompletedTasksMenuItem;
-    @FXML
-    private MenuItem viewUncompletedTasksMenuItem;
+    @FXML private Button addButton;
+    @FXML private Button clearButton;
+    @FXML private Button updateButton;
+    @FXML private Button removeButton;
+    @FXML private Button submitButton;
+
+    @FXML private MenuItem viewAllTasksMenuItem;
+    @FXML private MenuItem viewCompletedTasksMenuItem;
+    @FXML private MenuItem viewUncompletedTasksMenuItem;
+
+    FileChooser fileChooser = new FileChooser();
 
     // Initialize controller class
     @Override
@@ -85,12 +69,10 @@ public class ToDoListController implements Initializable {
         statusComboBox.getItems().removeAll(statusComboBox.getItems());
         statusComboBox.getItems().addAll("Completed", "Uncompleted");
 
-
         // set up the columns
-        itemDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("itemDescription"));
+        taskDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("taskDescription"));
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-
 
         // load dummy tasks for testing
         tableView.setItems(getTasks());
@@ -103,51 +85,71 @@ public class ToDoListController implements Initializable {
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 
-//        itemDescriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-
 
 
     }
 
     @FXML
     void menuItemOpenListClicked(ActionEvent event) {
+        fileChooser.setTitle("Open a ToDo List");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV (Comma delimited)", "*.csv"));
+
+        File file = fileChooser.showOpenDialog(new Stage());
+//        System.out.println(file);
+
+        if(file != null){
+            loadFile(file);
+        }
+    }
+
+    public void loadFile(File file){
 
     }
 
     @FXML
     void menuItemSaveListClicked(ActionEvent event) {
 
-        // For Testing
-        List<Item> allTasks = tableView.getItems();
-
-        for(int i = 0; i < allTasks.size(); i++){
-            System.out.println(allTasks.get(i).getItemDescription());
-        }
-
-        // To save
-        Stage secondaryStage = new Stage();
-        FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save ToDo List");
-//        fileChooser.setInitialDirectory(new File(System.getProperty("C:\\Users\\EDELITA\\Desktop\\OOPExercises\\assignment4part2")));
-//
-        File file = fileChooser.showSaveDialog(secondaryStage);
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV (Comma delimited)", "*.csv"));
+
+        File file = fileChooser.showSaveDialog(new Stage());
+//        System.out.println(file);
 
         if(file != null){
-            saveFile(tableView.getItems(), file);
+            saveFile(file);
         }
 
 
     }
 
-    public void saveFile(ObservableList<Item> tasks, File file){
+    public void saveFile(File file){
+        ObservableList<Task> tasks = tableView.getItems();
+
         try {
+            // create a writer
             BufferedWriter outWriter = new BufferedWriter(new FileWriter(file));
-            for(int i = 0; i < tasks.size(); i++){
-                outWriter.write(tasks.get(i).toString());
-                outWriter.newLine();
-            }
-            System.out.println(tasks.toString());
+
+            // write CSV file
+            CSVPrinter printer = CSVFormat.DEFAULT.print(outWriter);
+
+            // write list to file
+//            for(int i = 0; i < tasks.size(); i++){
+//                printer.printRecord(tasks.get(i).taskDescription, tasks.get(i).dueDate, tasks.get(i).status);
+//            }
+            printer.printRecords(tasks);
+
+            // flush the stream
+            printer.flush();
+
+            // close the writer
             outWriter.close();
+
+//            for(int i = 0; i < tasks.size(); i++){
+//                outWriter.write(tasks.get(i).toString());
+//                outWriter.newLine();
+//            }
+//            System.out.println(tasks.toString());
+//            outWriter.close();
 
         } catch (IOException e) {
             Alert saveAlert = new Alert(Alert.AlertType.ERROR);
@@ -158,12 +160,11 @@ public class ToDoListController implements Initializable {
     }
 
 
-
     @FXML
     void menuItemGetHelpClicked(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Get Help");
-        alert.setHeaderText("Refer to file readme.md in the GitHub Repository for the project");
+        alert.setHeaderText("Refer to file README.md in the GitHub Repository for the project");
         alert.showAndWait();
     }
 
@@ -174,10 +175,10 @@ public class ToDoListController implements Initializable {
         if (descriptionTextField.getText().isEmpty()) {
             errorLabel.setText("Enter item description!");
         } else {
-            Item newItem = new Item(descriptionTextField.getText(), dueDatePicker.getValue(), statusComboBox.getValue());
+            Task newTask = new Task(descriptionTextField.getText(), dueDatePicker.getValue(), statusComboBox.getValue());
 
             // Get all the items as a list, then add the new task to the list
-            tableView.getItems().add(newItem);
+            tableView.getItems().add(newTask);
         }
     }
 
@@ -199,18 +200,18 @@ public class ToDoListController implements Initializable {
 
         errorLabel.setText("");
 
-        ObservableList<Item> allItems = null, selectedRows;
+        ObservableList<Task> allTasks = null, selectedRows;
 
         try {
-            allItems = tableView.getItems();
+            allTasks = tableView.getItems();
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
 
         selectedRows = tableView.getSelectionModel().getSelectedItems();
 
-        for (Item item : selectedRows) {
-            allItems.remove(item);
+        for (Task task : selectedRows) {
+            allTasks.remove(task);
         }
     }
 
@@ -220,7 +221,7 @@ public class ToDoListController implements Initializable {
     }
 
 
-    public ObservableList<Item> getAllTableViewItems(){
+    public ObservableList<Task> getAllTableViewItems(){
         return tableView.getItems();
     }
 
@@ -242,34 +243,37 @@ public class ToDoListController implements Initializable {
 
 
     // Method to return an ObservableList of Task Objects
-    public ObservableList<Item> getTasks() {
-        ObservableList<Item> item = FXCollections.observableArrayList();
-        item.add(new Item("Flight to Lima", LocalDate.of(2021, Month.AUGUST, 13), "Completed"));
-        item.add(new Item("Flight to Cuzco", LocalDate.of(2021, Month.AUGUST, 15), "Uncompleted"));
-        item.add(new Item("Train to Machu Picchu", LocalDate.of(2021, Month.AUGUST, 16), "Completed"));
-        item.add(new Item("Tour to Rainbow Mountain", LocalDate.of(2021, Month.AUGUST, 18), "Completed"));
+    public ObservableList<Task> getTasks() {
+        ObservableList<Task> task = FXCollections.observableArrayList();
+        task.add(new Task("Buy round trip flight tickets to Lima", LocalDate.of(2021, Month.JULY, 3), "Completed"));
+        task.add(new Task("Reserve hotel room", LocalDate.of(2021, Month.JULY, 4), "Completed"));
+        task.add(new Task("Buy round trip flight tickets from Lima to Cuzco", LocalDate.of(2021, Month.JULY, 8), "Completed"));
+        task.add(new Task("Flight to Lima", LocalDate.of(2021, Month.AUGUST, 13), "Uncompleted"));
+        task.add(new Task("Flight to Cuzco", LocalDate.of(2021, Month.AUGUST, 15), "Uncompleted"));
+        task.add(new Task("Train to Machu Picchu", LocalDate.of(2021, Month.AUGUST, 16), "Uncompleted"));
+        task.add(new Task("Tour to Rainbow Mountain", LocalDate.of(2021, Month.AUGUST, 18), "Uncompleted"));
 
-        return item;
+        return task;
     }
 
-    public void filter(String searchValue, ObservableList<Item> dataList) {
+    public void filter(String searchValue, ObservableList<Task> dataList) {
 
-        FilteredList<Item> filteredData = new FilteredList<>(dataList, b -> true);
+        FilteredList<Task> filteredData = new FilteredList<>(dataList, b -> true);
 
-        filteredData.setPredicate(item -> {
+        filteredData.setPredicate(task -> {
             // If filter text is empty, display all persons.
             if (searchValue == null || searchValue.isEmpty()) {
                 return true;
             }
 
-            if (item.getStatus().indexOf(searchValue) != -1)
+            if (task.getStatus().indexOf(searchValue) != -1)
                 return true; // Filter matches first name.
             else
                 return false; // Does not match.
         });
 
         // 3. Wrap the FilteredList in a SortedList.
-        SortedList<Item> sortedData = new SortedList<>(filteredData);
+        SortedList<Task> sortedData = new SortedList<>(filteredData);
 
         // 4. Bind the SortedList comparator to the TableView comparator.
         // 	  Otherwise, sorting the TableView would have no effect.

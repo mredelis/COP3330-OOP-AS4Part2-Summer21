@@ -48,7 +48,7 @@
          <children>
             <TableView fx:id="tableView">
               <columns>
-                <TableColumn fx:id="itemDescriptionColumn" minWidth="300.0" prefWidth="300.0" text="Item Description" />
+                <TableColumn fx:id="taskDescriptionColumn" minWidth="300.0" prefWidth="300.0" text="Task Description" />
                 <TableColumn fx:id="dueDateColumn" minWidth="40.0" prefWidth="40.0" text="Due Date" />
                   <TableColumn fx:id="statusColumn" minWidth="40.0" prefWidth="40.0" text="Status" />
               </columns>

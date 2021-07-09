@@ -9,31 +9,26 @@ import javafx.beans.property.SimpleStringProperty;
 
 import java.time.LocalDate;
 
-public class Item {
-    SimpleStringProperty itemDescription;
+public class Task {
+    SimpleStringProperty taskDescription;
     LocalDate dueDate;
     SimpleStringProperty status;
 
-    public Item(String itemDescription, LocalDate dueDate, String status) {
-        this.itemDescription = new SimpleStringProperty(itemDescription);
+    public Task(String taskDescription, LocalDate dueDate, String status) {
+        this.taskDescription = new SimpleStringProperty(taskDescription);
         this.status = new SimpleStringProperty(status);
         this.dueDate = dueDate;
     }
 
-    /*
-     Getter and Setters
-     */
 
-    // Item Description
-    public String getItemDescription(){
-        return itemDescription.get();
+    public String getTaskDescription(){
+        return taskDescription.get();
     }
 
-    public void setItemDescription(String itemDescription){
-        this.itemDescription = new SimpleStringProperty(itemDescription);
+    public void setTaskDescription(String taskDescription){
+        this.taskDescription = new SimpleStringProperty(taskDescription);
     }
 
-    // Status (Complete or Incomplete)
     public String getStatus(){
         return status.get();
     }
@@ -42,13 +37,16 @@ public class Item {
         this.status = new SimpleStringProperty(status);
     }
 
-    // Due date (DatePicker)
     public LocalDate getDueDate() {
         return dueDate;
     }
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String toString(){
+        return getTaskDescription()+getDueDate()+getStatus();
     }
 
 }
