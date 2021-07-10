@@ -47,7 +47,7 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
-            <TableView fx:id="tableView">
+            <TableView fx:id="tableView" onMouseClicked="#updateView">
               <columns>
                 <TableColumn fx:id="taskDescriptionColumn" minWidth="300.0" onEditCommit="#onEditDescription" prefWidth="300.0" text="Task Description" />
                 <TableColumn fx:id="dueDateColumn" minWidth="40.0" prefWidth="40.0" text="Due Date" />
@@ -57,21 +57,22 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="760.0" spacing="10.0">
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="760.0" spacing="5.0">
                <children>
                   <TextField fx:id="descriptionTextField" prefHeight="30.0" prefWidth="338.0" promptText="Item Description" HBox.hgrow="ALWAYS" />
-                  <DatePicker fx:id="dueDatePicker" prefHeight="30.0" prefWidth="160.0" promptText="Due Date" />
+                  <DatePicker fx:id="dueDatePicker" prefHeight="30.0" prefWidth="120.0" promptText="Due Date" />
                    
-                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="30.0" prefWidth="80.0" text="Add Task" />
+                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="30.0" prefWidth="100.0" text="Add Task" />
+                  <Button fx:id="updateTaskButton" layoutX="600.0" layoutY="17.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Update Task" />
                </children>
             </HBox>
             <HBox alignment="CENTER" layoutX="30.0" layoutY="327.0" prefHeight="50.0" spacing="10.0">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="400.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearButtonClicked" prefHeight="30.0" prefWidth="80.0" text="Clear List" />
-                        <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateButtonClicked" prefHeight="30.0" prefWidth="80.0" text="Update" />
-                        <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeButtonClicked" prefHeight="30.0" prefWidth="115.0" text="Remove Item" />
+                        <Button fx:id="clearFieldsButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Clear Fields" />
+                        <Button fx:id="clearListButton" mnemonicParsing="false" onAction="#clearButtonClicked" prefHeight="30.0" prefWidth="100.0" text="Clear List" />
+                        <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeButtonClicked" prefHeight="30.0" prefWidth="100.0" text="Remove Item" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="400.0" spacing="10.0" HBox.hgrow="ALWAYS">

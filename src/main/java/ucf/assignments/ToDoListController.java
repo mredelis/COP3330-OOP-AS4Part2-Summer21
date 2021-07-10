@@ -8,8 +8,6 @@ package ucf.assignments;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,10 +15,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.naming.Binding;
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
@@ -40,8 +38,9 @@ public class ToDoListController implements Initializable {
     @FXML private MenuItem viewIncompletedTasksMenuItem;
 
     @FXML private Button addButton;
-    @FXML private Button clearButton;
-    @FXML private Button updateButton;
+    @FXML private Button clearListButton;
+    @FXML private Button updateTaskButton;
+    @FXML private Button clearFieldsButton;
     @FXML private Button removeButton;
     @FXML private Button submitButton;
 
@@ -52,7 +51,6 @@ public class ToDoListController implements Initializable {
     @FXML private TableColumn<Task, LocalDate> dueDateColumn;
     @FXML private TableColumn<Task, String> statusColumn;
 
-
     @FXML private TextField descriptionTextField;
     @FXML private DatePicker dueDatePicker;
 
@@ -61,6 +59,10 @@ public class ToDoListController implements Initializable {
     // Initialize controller class
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        updateTaskButton.setDisable(true);
+        clearFieldsButton.setDisable(true);
+        // Add later remove item button
 
         // set up the columns
         taskDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("taskDescription"));
@@ -81,7 +83,7 @@ public class ToDoListController implements Initializable {
         // Disable remove button when tableView is empty
         removeButton.disableProperty().bind(Bindings.size(tableView.getItems()).lessThan(1));
         // Disable Clear List button when tableView is empty
-        clearButton.disableProperty().bind(Bindings.size(tableView.getItems()).lessThan(1));
+        clearListButton.disableProperty().bind(Bindings.size(tableView.getItems()).lessThan(1));
 
 
         // Allow multiple tasks selection at one
@@ -304,5 +306,11 @@ public class ToDoListController implements Initializable {
     public void onEditStatus(TableColumn.CellEditEvent<Task, String> taskStringCellEditEvent) {
         Task selectedTask = tableView.getSelectionModel().getSelectedItem();
         selectedTask.setStatus(taskStringCellEditEvent.getNewValue());
+    }
+
+    public void updateView(MouseEvent mouseEvent) {
+        Task selectedTask = tableView.getSelectionModel().getSelectedItem();
+        descriptionTextField.setText(selectedTask.getTaskDescription());
+        dueDatePicker.setValue(selectedTask.getDueDate());
     }
 }
