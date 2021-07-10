@@ -312,5 +312,30 @@ public class ToDoListController implements Initializable {
         Task selectedTask = tableView.getSelectionModel().getSelectedItem();
         descriptionTextField.setText(selectedTask.getTaskDescription());
         dueDatePicker.setValue(selectedTask.getDueDate());
+
+        clearFieldsButton.setDisable(false);
+        updateTaskButton.setDisable(false);
+    }
+
+    public void updateTaskButtonClicked() {
+        Task selectedTask = tableView.getSelectionModel().getSelectedItem();
+        int rowIdx = tableView.getSelectionModel().getFocusedIndex();
+
+        System.out.println("Test.......................");
+
+        if(selectedTask != null){
+            selectedTask.setTaskDescription(descriptionTextField.getText());
+            selectedTask.setDueDate(dueDatePicker.getValue());
+            tableView.getItems().set(rowIdx, selectedTask);
+        }
+
+
+
+
+
+    }
+
+    public void clearFieldsButtonClicked(){
+        clearFields();
     }
 }
