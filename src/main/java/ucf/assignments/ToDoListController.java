@@ -72,9 +72,8 @@ public class ToDoListController implements Initializable {
         // load dummy tasks for testing
         tableView.setItems(getTasks());
 
-        // Update table to allow task description and due date columns to be editable.
+        // Update table to allow Status Column to be editable.
         tableView.setEditable(true);
-        taskDescriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         statusColumn.setCellFactory(ComboBoxTableCell.forTableColumn("Completed", "Incompleted"));
 
 
@@ -298,10 +297,6 @@ public class ToDoListController implements Initializable {
 //        tableView.setItems(sortedData);
 //    }
 
-    public void onEditDescription(TableColumn.CellEditEvent<Task, String> taskStringCellEditEvent) {
-        Task selectedTask = tableView.getSelectionModel().getSelectedItem();
-        selectedTask.setTaskDescription(taskStringCellEditEvent.getNewValue());
-    }
 
     public void onEditStatus(TableColumn.CellEditEvent<Task, String> taskStringCellEditEvent) {
         Task selectedTask = tableView.getSelectionModel().getSelectedItem();
@@ -321,18 +316,11 @@ public class ToDoListController implements Initializable {
         Task selectedTask = tableView.getSelectionModel().getSelectedItem();
         int rowIdx = tableView.getSelectionModel().getFocusedIndex();
 
-        System.out.println("Test.......................");
-
         if(selectedTask != null){
             selectedTask.setTaskDescription(descriptionTextField.getText());
             selectedTask.setDueDate(dueDatePicker.getValue());
             tableView.getItems().set(rowIdx, selectedTask);
         }
-
-
-
-
-
     }
 
     public void clearFieldsButtonClicked(){
