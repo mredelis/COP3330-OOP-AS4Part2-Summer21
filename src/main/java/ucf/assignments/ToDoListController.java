@@ -16,20 +16,24 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalDateStringConverter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class ToDoListController implements Initializable {
+
+
 
     @FXML private MenuItem menuItemOpenList;
     @FXML private MenuItem menuItemSaveList;
@@ -89,10 +93,11 @@ public class ToDoListController implements Initializable {
 
     }
 
+    // DONE------------------------------------------------------------------------------------------------------
     @FXML
     void menuItemOpenListClicked(ActionEvent event) {
         fileChooser.setTitle("Open a ToDo List");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV (Comma delimited)", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text file", "*.txt"));
 
         File file = fileChooser.showOpenDialog(new Stage());
 //        System.out.println(file);
@@ -103,14 +108,52 @@ public class ToDoListController implements Initializable {
     }
 
     public void loadFile(File file){
+        ObservableList<Task> item = FXCollections.observableArrayList();
+        /*
+                ObservableList<Task> task = FXCollections.observableArrayList();
+        task.add(new Task("Buy round trip flight tickets to Lima", LocalDate.of(2021, Month.JULY, 3), "Completed"));
+         */
+
+        String[] lines = null;
+        LocalDate datetime = null;
+
+        try {
+            Scanner scan = new Scanner(file);
+            while (scan.hasNextLine()) {
+                lines = scan.nextLine().split(",");
+
+                // convert String to LocalDate
+                DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                try {
+                    datetime = LocalDate.parse(lines[1], pattern);
+                    System.out.println(datetime);
+                } catch (DateTimeParseException e) {
+                    System.out.println(lines[1] + " cannot be parse into yyyy-mm-dd");
+                }
+
+                item.add(new Task(lines[0], datetime, lines[2]));
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+        for (int i = 0; i < item.size(); i++){
+            System.out.println(item.get(i));
+        }
+
+        tableView.setItems(item);
+
+
+
 
     }
 
+    // DONE------------------------------------------------------------------------------------------------------
     @FXML
     void menuItemSaveListClicked(ActionEvent event) {
-
         fileChooser.setTitle("Save ToDo List");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV (Comma delimited)", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text file", "*.txt"));
 
         File file = fileChooser.showSaveDialog(new Stage());
 //        System.out.println(file);
@@ -118,38 +161,22 @@ public class ToDoListController implements Initializable {
         if(file != null){
             saveFile(file);
         }
-
-
     }
 
-    public void saveFile(File file){
+    // DONE------------------------------------------------------------------------------------------------------
+    public void saveFile(File file) {
         ObservableList<Task> tasks = tableView.getItems();
 
         try {
             // create a writer
             BufferedWriter outWriter = new BufferedWriter(new FileWriter(file));
 
-            // write CSV file
-            CSVPrinter printer = CSVFormat.DEFAULT.print(outWriter);
-
-            // write list to file
-//            for(int i = 0; i < tasks.size(); i++){
-//                printer.printRecord(tasks.get(i).taskDescription, tasks.get(i).dueDate, tasks.get(i).status);
-//            }
-            printer.printRecords(tasks);
-
-            // flush the stream
-            printer.flush();
-
-            // close the writer
+            for (int i = 0; i < tasks.size(); i++) {
+                outWriter.write(tasks.get(i).toString());
+                outWriter.newLine();
+            }
+            System.out.println(tasks.toString());
             outWriter.close();
-
-//            for(int i = 0; i < tasks.size(); i++){
-//                outWriter.write(tasks.get(i).toString());
-//                outWriter.newLine();
-//            }
-//            System.out.println(tasks.toString());
-//            outWriter.close();
 
         } catch (IOException e) {
             Alert saveAlert = new Alert(Alert.AlertType.ERROR);

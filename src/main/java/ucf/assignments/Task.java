@@ -46,7 +46,7 @@ public class Task {
     }
 
     public String toString(){
-        return getTaskDescription()+getDueDate()+getStatus();
+        return getTaskDescription()+","+getDueDate()+","+getStatus();
     }
 
 }
