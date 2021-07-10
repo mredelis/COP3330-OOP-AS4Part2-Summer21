@@ -13,7 +13,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalDateStringConverter;
@@ -40,7 +42,6 @@ public class ToDoListController implements Initializable {
 
     @FXML private MenuItem menuItemGetHelp;
 
-
     @FXML private TextField ListNameTextFiled;
     @FXML private Label errorLabel;
 
@@ -62,7 +63,7 @@ public class ToDoListController implements Initializable {
 
     @FXML private MenuItem viewAllTasksMenuItem;
     @FXML private MenuItem viewCompletedTasksMenuItem;
-    @FXML private MenuItem viewUncompletedTasksMenuItem;
+    @FXML private MenuItem viewIncompletedTasksMenuItem;
 
     FileChooser fileChooser = new FileChooser();
 
@@ -71,12 +72,16 @@ public class ToDoListController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // ComboBox Items
         statusComboBox.getItems().removeAll(statusComboBox.getItems());
-        statusComboBox.getItems().addAll("Completed", "Uncompleted");
+        statusComboBox.getItems().addAll("Completed", "Incompleted");
 
         // set up the columns
         taskDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("taskDescription"));
+        taskDescriptionColumn.setCellFactory(TextFieldTableCell.<Task>forTableColumn());
+
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
+
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        statusColumn.setCellFactory(ComboBoxTableCell.<Task, String>forTableColumn("Completed", "Incompleted"));
 
         // load dummy tasks for testing
         tableView.setItems(getTasks());
@@ -87,10 +92,6 @@ public class ToDoListController implements Initializable {
 
         // Allow multiple tasks selection at one
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-
-
-
     }
 
     // DONE------------------------------------------------------------------------------------------------------
@@ -107,12 +108,10 @@ public class ToDoListController implements Initializable {
         }
     }
 
+    // DONE------------------------------------------------------------------------------------------------------
     public void loadFile(File file){
         ObservableList<Task> item = FXCollections.observableArrayList();
-        /*
-                ObservableList<Task> task = FXCollections.observableArrayList();
-        task.add(new Task("Buy round trip flight tickets to Lima", LocalDate.of(2021, Month.JULY, 3), "Completed"));
-         */
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         String[] lines = null;
         LocalDate datetime = null;
@@ -123,12 +122,10 @@ public class ToDoListController implements Initializable {
                 lines = scan.nextLine().split(",");
 
                 // convert String to LocalDate
-                DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 try {
                     datetime = LocalDate.parse(lines[1], pattern);
-                    System.out.println(datetime);
                 } catch (DateTimeParseException e) {
-                    System.out.println(lines[1] + " cannot be parse into yyyy-mm-dd");
+                    System.out.println(lines[1] + " cannot be parse into yyyy-MM-dd");
                 }
 
                 item.add(new Task(lines[0], datetime, lines[2]));
@@ -137,16 +134,7 @@ public class ToDoListController implements Initializable {
             e.printStackTrace();
         }
 
-
-        for (int i = 0; i < item.size(); i++){
-            System.out.println(item.get(i));
-        }
-
         tableView.setItems(item);
-
-
-
-
     }
 
     // DONE------------------------------------------------------------------------------------------------------
@@ -263,8 +251,8 @@ public class ToDoListController implements Initializable {
 
     }
 
-    public void viewUncompletedTasksMenuItemClicked() {
-        filter("Uncompleted", getAllTableViewItems());
+    public void viewIncompletedTasksMenuItemClicked() {
+        filter("Incompleted", getAllTableViewItems());
 
     }
 
@@ -275,10 +263,10 @@ public class ToDoListController implements Initializable {
         task.add(new Task("Buy round trip flight tickets to Lima", LocalDate.of(2021, Month.JULY, 3), "Completed"));
         task.add(new Task("Reserve hotel room", LocalDate.of(2021, Month.JULY, 4), "Completed"));
         task.add(new Task("Buy round trip flight tickets from Lima to Cuzco", LocalDate.of(2021, Month.JULY, 8), "Completed"));
-        task.add(new Task("Flight to Lima", LocalDate.of(2021, Month.AUGUST, 13), "Uncompleted"));
-        task.add(new Task("Flight to Cuzco", LocalDate.of(2021, Month.AUGUST, 15), "Uncompleted"));
-        task.add(new Task("Train to Machu Picchu", LocalDate.of(2021, Month.AUGUST, 16), "Uncompleted"));
-        task.add(new Task("Tour to Rainbow Mountain", LocalDate.of(2021, Month.AUGUST, 18), "Uncompleted"));
+        task.add(new Task("Flight to Lima", LocalDate.of(2021, Month.AUGUST, 13), "Incompleted"));
+        task.add(new Task("Flight to Cuzco", LocalDate.of(2021, Month.AUGUST, 15), "Incompleted"));
+        task.add(new Task("Train to Machu Picchu", LocalDate.of(2021, Month.AUGUST, 16), "Incompleted"));
+        task.add(new Task("Tour to Rainbow Mountain", LocalDate.of(2021, Month.AUGUST, 18), "Incompleted"));
 
         return task;
     }
