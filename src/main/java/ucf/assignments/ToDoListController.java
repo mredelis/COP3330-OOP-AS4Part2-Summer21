@@ -5,6 +5,7 @@ package ucf.assignments;
  *  Copyright 2021 Edelis Molina
  */
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -18,31 +19,32 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.converter.LocalDateStringConverter;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 
+import javax.naming.Binding;
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class ToDoListController implements Initializable {
 
-
-
     @FXML private MenuItem menuItemOpenList;
     @FXML private MenuItem menuItemSaveList;
-
     @FXML private MenuItem menuItemGetHelp;
+    @FXML private MenuItem viewAllTasksMenuItem;
+    @FXML private MenuItem viewCompletedTasksMenuItem;
+    @FXML private MenuItem viewIncompletedTasksMenuItem;
 
-    @FXML private TextField ListNameTextFiled;
+    @FXML private Button addButton;
+    @FXML private Button clearButton;
+    @FXML private Button updateButton;
+    @FXML private Button removeButton;
+    @FXML private Button submitButton;
+
     @FXML private Label errorLabel;
 
     @FXML private TableView<Task> tableView;
@@ -53,46 +55,39 @@ public class ToDoListController implements Initializable {
 
     @FXML private TextField descriptionTextField;
     @FXML private DatePicker dueDatePicker;
-    @FXML private ComboBox<String> statusComboBox;
-
-    @FXML private Button addButton;
-    @FXML private Button clearButton;
-    @FXML private Button updateButton;
-    @FXML private Button removeButton;
-    @FXML private Button submitButton;
-
-    @FXML private MenuItem viewAllTasksMenuItem;
-    @FXML private MenuItem viewCompletedTasksMenuItem;
-    @FXML private MenuItem viewIncompletedTasksMenuItem;
 
     FileChooser fileChooser = new FileChooser();
 
     // Initialize controller class
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // ComboBox Items
-        statusComboBox.getItems().removeAll(statusComboBox.getItems());
-        statusComboBox.getItems().addAll("Completed", "Incompleted");
 
         // set up the columns
         taskDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("taskDescription"));
-        taskDescriptionColumn.setCellFactory(TextFieldTableCell.<Task>forTableColumn());
-
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
-
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        statusColumn.setCellFactory(ComboBoxTableCell.<Task, String>forTableColumn("Completed", "Incompleted"));
 
         // load dummy tasks for testing
         tableView.setItems(getTasks());
 
-        // Update table to allow item description and due date columns to be editable.
-        // The status (complete or incomplete) will be done via pushedButton
+        // Update table to allow task description and due date columns to be editable.
         tableView.setEditable(true);
+        taskDescriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        statusColumn.setCellFactory(ComboBoxTableCell.forTableColumn("Completed", "Incompleted"));
+
+
+        // Disable remove button until a task is selected from the table
+        removeButton.disableProperty().bind(tableView.getSelectionModel().selectedItemProperty().isNull());
+        // Disable remove button when tableView is empty
+        removeButton.disableProperty().bind(Bindings.size(tableView.getItems()).lessThan(1));
+        // Disable Clear List button when tableView is empty
+        clearButton.disableProperty().bind(Bindings.size(tableView.getItems()).lessThan(1));
+
 
         // Allow multiple tasks selection at one
-        tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
+
 
     // DONE------------------------------------------------------------------------------------------------------
     @FXML
@@ -135,6 +130,12 @@ public class ToDoListController implements Initializable {
         }
 
         tableView.setItems(item);
+    }
+
+    // DONE------------------------------------------------------------------------------------------------------
+    @FXML
+    void clearButtonClicked(ActionEvent event) {
+        tableView.getItems().clear();
     }
 
     // DONE------------------------------------------------------------------------------------------------------
@@ -185,23 +186,25 @@ public class ToDoListController implements Initializable {
 
     // Method to create a Task Object and add it to the table
     public void addButtonClicked() {
-        errorLabel.setText("");
+        errorLabel.setVisible(false);
 
-        if (descriptionTextField.getText().isEmpty()) {
-            errorLabel.setText("Enter item description!");
+        if (descriptionTextField.getText().isEmpty() || dueDatePicker.getValue() == null) {
+            errorLabel.setVisible(true);
+            errorLabel.setText("Task description and due date must be filled in!");
         } else {
-            Task newTask = new Task(descriptionTextField.getText(), dueDatePicker.getValue(), statusComboBox.getValue());
+            Task newTask = new Task(descriptionTextField.getText(), dueDatePicker.getValue(), "Incompleted");
 
             // Get all the items as a list, then add the new task to the list
             tableView.getItems().add(newTask);
+            clearFields();
         }
     }
 
-    // Method to clear data from Item Description, Date Picker and Combo Box
-    public void clearButtonClicked() {
+    // Method to clear data from Item Description and Date Picker
+    public void clearFields() {
         descriptionTextField.clear();
         dueDatePicker.getEditor().clear();
-        statusComboBox.valueProperty().set(null);
+        descriptionTextField.requestFocus();
     }
 
     // Method to double click on a cell and update item description
@@ -212,49 +215,44 @@ public class ToDoListController implements Initializable {
 
     // Method to remove selected row(s) from the table
     public void removeButtonClicked() {
+        errorLabel.setVisible(false);
 
-        errorLabel.setText("");
-
-        ObservableList<Task> allTasks = null, selectedRows;
-
-        try {
-            allTasks = tableView.getItems();
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
+        if(tableView.getSelectionModel().isEmpty()){
+            errorLabel.setVisible(true);
+            errorLabel.setText("Select task to remove!");
         }
-
-        selectedRows = tableView.getSelectionModel().getSelectedItems();
-
-        for (Task task : selectedRows) {
-            allTasks.remove(task);
+        else {
+            tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
+            tableView.getSelectionModel().clearSelection();
         }
     }
 
-    // Method to go back to the ListManager Scene
-    public void submitButtonClicked() {
 
-    }
-
-
-    public ObservableList<Task> getAllTableViewItems(){
-        return tableView.getItems();
-    }
-
-    public void viewAllTasksMenuItemClicked() {
-        filter("", getAllTableViewItems());
+//    // Method to go back to the ListManager Scene
+//    public void submitButtonClicked() {
+//
+//    }
 
 
-    }
-
-    public void viewCompletedTasksMenuItemClicked() {
-        filter("Completed", getAllTableViewItems());
-
-    }
-
-    public void viewIncompletedTasksMenuItemClicked() {
-        filter("Incompleted", getAllTableViewItems());
-
-    }
+//    public ObservableList<Task> getAllTableViewItems(){
+//        return tableView.getItems();
+//    }
+//
+//    public void viewAllTasksMenuItemClicked() {
+//        filter("", getAllTableViewItems());
+//
+//
+//    }
+//
+//    public void viewCompletedTasksMenuItemClicked() {
+//        filter("Completed", getAllTableViewItems());
+//
+//    }
+//
+//    public void viewIncompletedTasksMenuItemClicked() {
+//        filter("Incompleted", getAllTableViewItems());
+//
+//    }
 
 
     // Method to return an ObservableList of Task Objects
@@ -271,30 +269,40 @@ public class ToDoListController implements Initializable {
         return task;
     }
 
-    public void filter(String searchValue, ObservableList<Task> dataList) {
+//    public void filter(String searchValue, ObservableList<Task> dataList) {
+//
+//        FilteredList<Task> filteredData = new FilteredList<>(dataList, b -> true);
+//
+//        filteredData.setPredicate(task -> {
+//            // If filter text is empty, display all persons.
+//            if (searchValue == null || searchValue.isEmpty()) {
+//                return true;
+//            }
+//
+//            if (task.getStatus().indexOf(searchValue) != -1)
+//                return true; // Filter matches first name.
+//            else
+//                return false; // Does not match.
+//        });
+//
+//        // 3. Wrap the FilteredList in a SortedList.
+//        SortedList<Task> sortedData = new SortedList<>(filteredData);
+//
+//        // 4. Bind the SortedList comparator to the TableView comparator.
+//        // 	  Otherwise, sorting the TableView would have no effect.
+//        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+//
+//        // 5. Add sorted (and filtered) data to the table.
+//        tableView.setItems(sortedData);
+//    }
 
-        FilteredList<Task> filteredData = new FilteredList<>(dataList, b -> true);
+    public void onEditDescription(TableColumn.CellEditEvent<Task, String> taskStringCellEditEvent) {
+        Task selectedTask = tableView.getSelectionModel().getSelectedItem();
+        selectedTask.setTaskDescription(taskStringCellEditEvent.getNewValue());
+    }
 
-        filteredData.setPredicate(task -> {
-            // If filter text is empty, display all persons.
-            if (searchValue == null || searchValue.isEmpty()) {
-                return true;
-            }
-
-            if (task.getStatus().indexOf(searchValue) != -1)
-                return true; // Filter matches first name.
-            else
-                return false; // Does not match.
-        });
-
-        // 3. Wrap the FilteredList in a SortedList.
-        SortedList<Task> sortedData = new SortedList<>(filteredData);
-
-        // 4. Bind the SortedList comparator to the TableView comparator.
-        // 	  Otherwise, sorting the TableView would have no effect.
-        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
-
-        // 5. Add sorted (and filtered) data to the table.
-        tableView.setItems(sortedData);
+    public void onEditStatus(TableColumn.CellEditEvent<Task, String> taskStringCellEditEvent) {
+        Task selectedTask = tableView.getSelectionModel().getSelectedItem();
+        selectedTask.setStatus(taskStringCellEditEvent.getNewValue());
     }
 }
