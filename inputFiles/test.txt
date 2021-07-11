@@ -1,0 +1,2 @@
+Buy round trip flight tickets to Lima,2021-07-03,Completed
+Reserve hotel room,2021-07-04,Incompleted

@@ -115,6 +115,7 @@ public class ToDoListController implements Initializable {
         File file = fileChooser.showOpenDialog(new Stage());
 
         if (file != null) {
+            System.out.println(file);
             loadFile(file);
         }
     }
