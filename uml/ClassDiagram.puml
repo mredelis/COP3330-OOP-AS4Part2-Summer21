@@ -47,6 +47,7 @@ class ToDoListController{
     + onEditTaskStatus()
     + updateView()
     + updateTaskButtonClicked() /'Delegate testing'/
+        + void updateTaskTest()
     + clearFieldsButtonClicked()
         + clearFields()
     + closeApp()

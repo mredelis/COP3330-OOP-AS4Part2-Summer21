@@ -253,10 +253,17 @@ public class ToDoListController implements Initializable {
         int rowIdx = tableView.getSelectionModel().getFocusedIndex();
 
         if (selectedTask != null) {
-            selectedTask.setTaskDescription(descriptionTextField.getText());
-            selectedTask.setDueDate(dueDatePicker.getValue());
-            tableView.getItems().set(rowIdx, selectedTask);
+            Task updatedTask = updateTask(selectedTask, descriptionTextField.getText(), dueDatePicker.getValue());
+            observableTaskList.set(rowIdx, updatedTask);
         }
+    }
+
+    // Delegate updateTaskButtonClicked() function for testing
+    public Task updateTask(Task selectedTask, String newDescription, LocalDate newDate){
+        selectedTask.setTaskDescription(newDescription);
+        selectedTask.setDueDate(newDate);
+
+        return selectedTask;
     }
 
 

@@ -71,7 +71,7 @@ class ToDoListControllerTest {
 //        // Call method from Controller class to clear an ObservableList
 //        controller.clearObservableList(testList);
 //
-//        // Check list is empty
+//        // Check if list is empty
 //        assertTrue(testList.isEmpty());
 //    }
 
@@ -84,7 +84,15 @@ class ToDoListControllerTest {
 //    void removeButtonClicked() {
 //    }
 //
+
+//    // Done----------------------------------------------------------------------------------------------------------------------------
 //    @Test
-//    void updateTaskButtonClicked() {
+//    void updateTaskTest() {
+//        Task selectedTask = new Task("Task", LocalDate.of(2021, Month.JULY, 3), "Completed");
+//
+//        Task updatedTask = controller.updateTask(selectedTask, "Task has been updated", LocalDate.of(2030, Month.JULY, 3));
+//
+//        assertEquals(updatedTask.getTaskDescription(), "Task has been updated");
+//        assertEquals(updatedTask.getDueDate(), LocalDate.of(2030, Month.JULY, 3));
 //    }
 }
