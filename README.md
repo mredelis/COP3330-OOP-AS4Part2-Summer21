@@ -8,3 +8,5 @@ exit the application
 
 Add Task: Both fields, Task Description and Due Date must be filled in to add a task. When creating  a new task,
 the status is set to Incompleted by default.
+
+Mark Task as Completed: Double-click on the Status Cell and select Completed or Incompleted from ComboBox 

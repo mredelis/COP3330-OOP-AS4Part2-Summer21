@@ -1,77 +1,61 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-class ListManager{
+class ToDoListManager{
     main()
     start()
 }
 
-class ToDoListMasterController{
-
-    - openMenuItem: MenuItem
-    - saveMenuItem: MenuItem
-    - saveAllMenuItem: MenuItem
-
-    - list: ListView<ToDoList>
-
-    - addNewListButton: Button
-    - editListButton: Button
-
-    + addNewListButtonClicked()
-    + editListButtonClicked()
-    + openMenuItemClicked()
-    + saveAllMenuItemClicked()
-    + saveMenuItemClicked()
-}
-
 class ToDoListController{
-    - ListNameTextFiled: TextField;
+
+    - addButton: Button
+    - clearListButton: Button
+    - updateTaskButton: Button
+    - removeTaskButton: Button
+    - clearFieldsButton: Button
+
+    - menuBar: MenuBar
+    - viewComboBox: ComboBox<String>
     - errorLabel: Label
 
-    - tableView: TableView<Item>
-    - itemDescriptionColumn: TableColumn<Item, String>
+    - tableView: TableView<Task>
+    - taskDescriptionColumn: TableColumn<Item, String>
     - dueDateColumn: TableColumn<Item, LocalDate>
     - statusColumn: TableColumn<Item, String>
 
     - descriptionTextField: TextField
     - dueDatePicker: DatePicker
-    - statusComboBox: ComboBox<String>
 
-    - addButton: Button
-    - clearButton: Button
-    - updateButton: Button
-    - removeButton: Button
-    - submitButton: Button
+    - observableTaskList: ObservableList<Task>
 
-    - viewAllTasksMenuItem: MenuItem
-    - viewCompletedTasksMenuItem: MenuItem
-    - viewUncompletedTasksMenuItem: MenuItem
+    + initialize()
+    + filter()
 
-    + addButtonClicked()
-    + clearButtonClicked()
-    + updateButtonClicked()
-    + removeButtonClicked()
-    + submitButtonClicked()
+    + menuItemOpenListClicked()
+        + loadFile() /'loadFile() also calls clearObservableList()'/
 
-    + viewAllTasksMenuItemClicked()
-    + viewCompletedTasksMenuItemClicked()
-    + viewUncompletedTasksMenuItemClicked()
+    + menuItemSaveListClicked()
+        + saveFile()
+
+    + menuItemGetHelpClicked()
+
+    + clearListButtonClicked()
+        + clearObservableList()
+
+    + addButtonClicked()     /'Delegate testing'/
+    + removeButtonClicked()  /'Delegate testing'/
+    + onEditTaskStatus()
+    + updateView()
+    + updateTaskButtonClicked() /'Delegate testing'/
+    + clearFieldsButtonClicked()
+        + clearFields()
+    + closeApp()
 }
 
-class ToDoList{
-    - ToDoListName : String
-    - ToDoListItems : ObservableList<Item>
-
-    + getToDoListName()
-    + setToDoListName()
-    + getToDoListItems()
-    + setToDoListItems()
-}
-
-class Item{
-    - itemDescription : String
+class Task{
+    - taskDescription : SimpleStringProperty
     - dueDate: LocalDate
-    - status: Boolean
+    - status: SimpleStringProperty
 
     + setItemDescription()
     + getItemDescription()
@@ -79,13 +63,12 @@ class Item{
     + getStatus()
     + setDueDate()
     + getDueDate()
+    + convertToString()
 }
 
-javafx.Application <|-- ListManager
-ListManager - ToDoListMasterController
-ToDoListMasterController - ToDoListController
-ToDoListController - ToDoList
-ToDoList - Item
+javafx.Application <|-- ToDoListManager
+ToDoListManager - ToDoListController
+ToDoListController - Task
 
 
 @enduml

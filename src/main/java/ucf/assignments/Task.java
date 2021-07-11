@@ -45,7 +45,7 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public String toString(){
+    public String convertToString(){
         return getTaskDescription()+","+getDueDate()+","+getStatus();
     }
 
