@@ -14,7 +14,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -30,19 +29,10 @@ import java.util.Scanner;
 
 public class ToDoListController implements Initializable {
 
-    @FXML private MenuItem menuItemOpenList;
-    @FXML private MenuItem menuItemSaveList;
-    @FXML private MenuItem menuItemGetHelp;
-    @FXML private MenuItem viewAllTasksMenuItem;
-    @FXML private MenuItem viewCompletedTasksMenuItem;
-    @FXML private MenuItem viewIncompletedTasksMenuItem;
-
-    @FXML private Button addButton;
     @FXML private Button clearListButton;
     @FXML private Button updateTaskButton;
     @FXML private Button clearFieldsButton;
     @FXML private Button removeButton;
-    @FXML private Button submitButton;
 
     @FXML private Label errorLabel;
 
@@ -56,7 +46,7 @@ public class ToDoListController implements Initializable {
 
     FileChooser fileChooser = new FileChooser();
 
-    // Initialize controller class
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -90,9 +80,7 @@ public class ToDoListController implements Initializable {
     }
 
 
-    // DONE------------------------------------------------------------------------------------------------------
-    @FXML
-    void menuItemOpenListClicked(ActionEvent event) {
+    public void menuItemOpenListClicked() {
         fileChooser.setTitle("Open a ToDo List");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text file", "*.txt"));
 
@@ -104,12 +92,12 @@ public class ToDoListController implements Initializable {
         }
     }
 
-    // DONE------------------------------------------------------------------------------------------------------
+
     public void loadFile(File file){
         ObservableList<Task> item = FXCollections.observableArrayList();
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        String[] lines = null;
+        String[] lines;
         LocalDate datetime = null;
 
         try {
@@ -133,15 +121,13 @@ public class ToDoListController implements Initializable {
         tableView.setItems(item);
     }
 
-    // DONE------------------------------------------------------------------------------------------------------
-    @FXML
-    void clearButtonClicked(ActionEvent event) {
+
+    public void clearListButtonClicked() {
         tableView.getItems().clear();
     }
 
-    // DONE------------------------------------------------------------------------------------------------------
-    @FXML
-    void menuItemSaveListClicked(ActionEvent event) {
+
+    public void menuItemSaveListClicked() {
         fileChooser.setTitle("Save ToDo List");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text file", "*.txt"));
 
@@ -177,8 +163,7 @@ public class ToDoListController implements Initializable {
     }
 
 
-    @FXML
-    void menuItemGetHelpClicked(ActionEvent event) {
+    public void menuItemGetHelpClicked() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Get Help");
         alert.setHeaderText("Refer to file README.md in the GitHub Repository for the project");
