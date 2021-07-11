@@ -91,7 +91,6 @@ public class ToDoListController implements Initializable {
 
         viewComboBox.getSelectionModel().selectedItemProperty().addListener(
             ((observable, oldValue, newValue) -> filter()));
-
     }
 
 
@@ -108,22 +107,6 @@ public class ToDoListController implements Initializable {
         }
     }
 
-
-    // Method to create a Task Object and add it to the table
-    public void addButtonClicked() {
-        errorLabel.setVisible(false);
-
-        if (descriptionTextField.getText().isEmpty() || dueDatePicker.getValue() == null) {
-            errorLabel.setVisible(true);
-            errorLabel.setText("Task description and due date must be filled in!");
-        } else {
-            Task newTask = new Task(descriptionTextField.getText(), dueDatePicker.getValue(), "Incompleted");
-
-            // Get all the items as a list, then add the new task to the list
-            observableTaskList.add(newTask);
-            clearFields();
-        }
-    }
 
     public void menuItemOpenListClicked() {
         fileChooser.setTitle("Open a ToDo List");
@@ -216,17 +199,29 @@ public class ToDoListController implements Initializable {
 
     public void clearListButtonClicked() {
         clearObservableList(observableTaskList);
-
         // For testing
         printObservableList(observableTaskList);
     }
 
 
-    // Method to clear data from Item Description and Date Picker
-    public void clearFields() {
-        descriptionTextField.clear();
-        dueDatePicker.getEditor().clear();
-        descriptionTextField.requestFocus();
+    public void clearObservableList(ObservableList<Task> list) {
+        list.clear();
+    }
+
+    // Method to create a Task Object and add it to the table
+    public void addButtonClicked() {
+        errorLabel.setVisible(false);
+
+        if (descriptionTextField.getText().isEmpty() || dueDatePicker.getValue() == null) {
+            errorLabel.setVisible(true);
+            errorLabel.setText("Task description and due date must be filled in!");
+        } else {
+            Task newTask = new Task(descriptionTextField.getText(), dueDatePicker.getValue(), "Incompleted");
+
+            // Get all the items as a list, then add the new task to the list
+            observableTaskList.add(newTask);
+            clearFields();
+        }
     }
 
 
@@ -271,8 +266,17 @@ public class ToDoListController implements Initializable {
         }
     }
 
+
     public void clearFieldsButtonClicked() {
         clearFields();
+    }
+
+
+    // Method to clear data from Item Description and Date Picker
+    public void clearFields() {
+        descriptionTextField.clear();
+        dueDatePicker.getEditor().clear();
+        descriptionTextField.requestFocus();
     }
 
     public void closeApp() {
@@ -297,9 +301,6 @@ public class ToDoListController implements Initializable {
         }
     }
 
-    public void clearObservableList(ObservableList<Task> list) {
-        list.clear();
-    }
 
     // Method to return an ObservableList of Task Objects
     public ObservableList<Task> getTasks() {
