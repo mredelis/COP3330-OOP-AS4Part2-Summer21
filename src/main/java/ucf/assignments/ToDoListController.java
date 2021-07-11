@@ -198,14 +198,12 @@ public class ToDoListController implements Initializable {
 
     public void clearListButtonClicked() {
         clearObservableList(observableTaskList);
-        // For testing
-        printObservableList(observableTaskList);
     }
-
 
     public void clearObservableList(ObservableList<Task> list) {
         list.clear();
     }
+
 
     // Method to create a Task Object and add it to the table
     public void addButtonClicked() {

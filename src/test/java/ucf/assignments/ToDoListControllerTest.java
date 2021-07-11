@@ -41,31 +41,45 @@ class ToDoListControllerTest {
 //        assertEquals(expResult, actualResult);
 //    }
 
-    @Test
-    void saveFile() {
-        ObservableList<Task> list = FXCollections.observableArrayList();
-        list.add(new Task("Task1", LocalDate.of(2021, Month.JULY, 3), "Completed"));
-
-        controller.saveFile(list, new File("C:\\Users\\EDELITA\\Desktop\\OOPExercises\\assignment4part2\\outputFiles\\out.txt"));
-
-        // After writing a Task to the file, the writer writes a new line
-        String expectedStr = "Task1,2021-07-03,Completed"+System.lineSeparator();
-
-        // Read in file content
-        String actualStr = "";
-        try {
-            actualStr = new String(Files.readAllBytes(Paths.get("C:\\Users\\EDELITA\\Desktop\\OOPExercises\\assignment4part2\\outputFiles\\out.txt")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        assertEquals(expectedStr, actualStr);
-    }
-
+//    // Done----------------------------------------------------------------------------------------------------------------------------
 //    @Test
-//    void clearObservableList() {
-//    }
+//    void saveFileTest() {
+//        ObservableList<Task> list = FXCollections.observableArrayList();
+//        list.add(new Task("Task1", LocalDate.of(2021, Month.JULY, 3), "Completed"));
 //
+//        controller.saveFile(list, new File("C:\\Users\\EDELITA\\Desktop\\OOPExercises\\assignment4part2\\outputFiles\\out.txt"));
+//
+//        // After writing a Task to the file, the writer writes a new line
+//        String expectedStr = "Task1,2021-07-03,Completed"+System.lineSeparator();
+//
+//        // Read in file content
+//        String actualStr = "";
+//        try {
+//            actualStr = new String(Files.readAllBytes(Paths.get("C:\\Users\\EDELITA\\Desktop\\OOPExercises\\assignment4part2\\outputFiles\\out.txt")));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        assertEquals(expectedStr, actualStr);
+//    }
+
+
+//    // Done----------------------------------------------------------------------------------------------------------------------------
+//    @Test
+//    void clearObservableListTest() {
+//        // Get a list of testing tasks
+//        ObservableList<Task> testList = controller.getTasks();
+//        // Check list is not empty
+//        assertTrue(!testList.isEmpty());
+//
+//        // Call method from Controller class to clear an ObservableList
+//        controller.clearObservableList(testList);
+//
+//        // Check list is empty
+//        assertTrue(testList.isEmpty());
+//    }
+
+
 //    @Test
 //    void addButtonClicked() {
 //    }
