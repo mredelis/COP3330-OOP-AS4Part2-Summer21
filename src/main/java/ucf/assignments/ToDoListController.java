@@ -116,12 +116,17 @@ public class ToDoListController implements Initializable {
 
         if (file != null) {
             System.out.println(file);
-            loadFile(file);
+
+            // remove previous Tasks from ObservableList of Tasks
+            clearObservableList(observableTaskList);
+
+            // Add new Tasks from the file
+            observableTaskList.addAll(loadFile(file));
         }
     }
 
-    public void loadFile(File file) {
-        ObservableList<Task> items = FXCollections.observableArrayList();
+    public ObservableList<Task> loadFile(File file) {
+        ObservableList<Task> tempTasksList = FXCollections.observableArrayList();
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         String[] lines;
@@ -139,20 +144,16 @@ public class ToDoListController implements Initializable {
                     System.out.println(lines[1] + " cannot be parse into yyyy-MM-dd");
                 }
 
-                items.add(new Task(lines[0], datetime, lines[2]));
+                tempTasksList.add(new Task(lines[0], datetime, lines[2]));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        // remove previous Tasks
-        clearObservableList(observableTaskList);
-
-        // Add new Tasks from the file
-        observableTaskList.addAll(items);
-
         // For Testing
-        printObservableList(observableTaskList);
+        printObservableList(tempTasksList);
+
+        return tempTasksList;
     }
 
     public void menuItemSaveListClicked() {
