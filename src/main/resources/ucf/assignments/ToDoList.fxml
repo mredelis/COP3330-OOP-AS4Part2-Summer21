@@ -17,12 +17,13 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.ToDoListController">
    <children>
-      <MenuBar layoutY="2.0" prefHeight="40.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuBar fx:id="menuBar" layoutY="2.0" prefHeight="40.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
               <MenuItem fx:id="menuItemOpenList" mnemonicParsing="false" onAction="#menuItemOpenListClicked" text="Open a ToDo List" />
                   <MenuItem fx:id="menuItemSaveList" mnemonicParsing="false" onAction="#menuItemSaveListClicked" text="Save ToDo List" />
+                  <MenuItem fx:id="menuItemQuit" mnemonicParsing="false" onAction="#closeApp" text="Quit" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="View">
@@ -59,7 +60,7 @@
             </TableView>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="760.0" spacing="5.0">
                <children>
-                  <TextField fx:id="descriptionTextField" prefHeight="30.0" prefWidth="338.0" promptText="Item Description" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="descriptionTextField" prefHeight="30.0" prefWidth="338.0" promptText="Task Description" HBox.hgrow="ALWAYS" />
                   <DatePicker fx:id="dueDatePicker" prefHeight="30.0" prefWidth="120.0" promptText="Due Date" />
                    
                   <Button fx:id="addButton" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="30.0" prefWidth="100.0" text="Add Task" />
@@ -77,12 +78,11 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="400.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="errorLabel" prefHeight="30.0" prefWidth="300.0" textFill="#ed0707">
+                        <Label fx:id="errorLabel" prefHeight="30.0" prefWidth="380.0" textFill="#ed0707">
                            <font>
                               <Font name="System Italic" size="13.0" />
                            </font>
                         </Label>
-                        <Button fx:id="submitButton" mnemonicParsing="false" prefHeight="30.0" text="Submit" />
                      </children>
                   </HBox>
                </children>

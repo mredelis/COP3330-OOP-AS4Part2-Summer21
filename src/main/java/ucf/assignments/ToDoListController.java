@@ -5,9 +5,11 @@ package ucf.assignments;
  *  Copyright 2021 Edelis Molina
  */
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +18,7 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -26,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import java.util.logging.Filter;
 
 public class ToDoListController implements Initializable {
 
@@ -33,6 +37,8 @@ public class ToDoListController implements Initializable {
     @FXML private Button updateTaskButton;
     @FXML private Button clearFieldsButton;
     @FXML private Button removeButton;
+
+    @FXML private MenuBar menuBar;
 
     @FXML private Label errorLabel;
 
@@ -44,7 +50,10 @@ public class ToDoListController implements Initializable {
     @FXML private TextField descriptionTextField;
     @FXML private DatePicker dueDatePicker;
 
+    @FXML private ComboBox<String> comboBox;
+
     FileChooser fileChooser = new FileChooser();
+    ObservableList<Task> observableTaskList = FXCollections.observableArrayList();
 
 
     @Override
@@ -52,6 +61,7 @@ public class ToDoListController implements Initializable {
 
         updateTaskButton.setDisable(true);
         clearFieldsButton.setDisable(true);
+        removeButton.setDisable(true);
         // Add later remove item button
 
         // set up the columns
@@ -59,8 +69,11 @@ public class ToDoListController implements Initializable {
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // load dummy tasks for testing
-        tableView.setItems(getTasks());
+        // load dummy data for testing
+        observableTaskList.addAll(getTasks());
+
+        tableView.setItems(observableTaskList);
+//        tableView.setPlaceholder(new Label("Your Table is Empty"));
 
         // Update table to allow Status Column to be editable.
         tableView.setEditable(true);
@@ -77,6 +90,33 @@ public class ToDoListController implements Initializable {
 
         // Allow multiple tasks selection at one
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+
+        //----------------------------------------------------------------initialize view comboBox
+        /*
+        genderBoxData.add(new String("Male"));
+        genderBoxData.add(new String("Female"));
+
+        genderBox.setItems(genderBoxData);
+         */
+
+
+    }
+
+    // Method to create a Task Object and add it to the table
+    public void addButtonClicked() {
+        errorLabel.setVisible(false);
+
+        if (descriptionTextField.getText().isEmpty() || dueDatePicker.getValue() == null) {
+            errorLabel.setVisible(true);
+            errorLabel.setText("Task description and due date must be filled in!");
+        } else {
+            Task newTask = new Task(descriptionTextField.getText(), dueDatePicker.getValue(), "Incompleted");
+
+            // Get all the items as a list, then add the new task to the list
+            observableTaskList.add(newTask);
+            clearFields();
+        }
     }
 
 
@@ -85,16 +125,14 @@ public class ToDoListController implements Initializable {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text file", "*.txt"));
 
         File file = fileChooser.showOpenDialog(new Stage());
-//        System.out.println(file);
 
         if(file != null){
             loadFile(file);
         }
     }
 
-
     public void loadFile(File file){
-        ObservableList<Task> item = FXCollections.observableArrayList();
+        ObservableList<Task> items = FXCollections.observableArrayList();
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         String[] lines;
@@ -112,18 +150,28 @@ public class ToDoListController implements Initializable {
                     System.out.println(lines[1] + " cannot be parse into yyyy-MM-dd");
                 }
 
-                item.add(new Task(lines[0], datetime, lines[2]));
+                items.add(new Task(lines[0], datetime, lines[2]));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        tableView.setItems(item);
+        // remove previous Tasks
+        clearObservableList(observableTaskList);
+
+        // Add new Tasks from the file
+        observableTaskList.addAll(items);
+
+        // For Testing
+        printObservableList(observableTaskList);
     }
 
 
     public void clearListButtonClicked() {
-        tableView.getItems().clear();
+        clearObservableList(observableTaskList);
+
+        // For testing
+        printObservableList(observableTaskList);
     }
 
 
@@ -135,23 +183,21 @@ public class ToDoListController implements Initializable {
 //        System.out.println(file);
 
         if(file != null){
-            saveFile(file);
+            saveFile(observableTaskList, file);
         }
     }
 
-    // DONE------------------------------------------------------------------------------------------------------
-    public void saveFile(File file) {
-        ObservableList<Task> tasks = tableView.getItems();
+    public void saveFile(ObservableList<Task> tasksList, File file) {
 
         try {
             // create a writer
             BufferedWriter outWriter = new BufferedWriter(new FileWriter(file));
 
-            for (int i = 0; i < tasks.size(); i++) {
-                outWriter.write(tasks.get(i).toString());
+            for (int i = 0; i < tasksList.size(); i++) {
+                outWriter.write(tasksList.get(i).toString());
                 outWriter.newLine();
             }
-            System.out.println(tasks.toString());
+            System.out.println(tasksList.toString());
             outWriter.close();
 
         } catch (IOException e) {
@@ -170,21 +216,7 @@ public class ToDoListController implements Initializable {
         alert.showAndWait();
     }
 
-    // Method to create a Task Object and add it to the table
-    public void addButtonClicked() {
-        errorLabel.setVisible(false);
 
-        if (descriptionTextField.getText().isEmpty() || dueDatePicker.getValue() == null) {
-            errorLabel.setVisible(true);
-            errorLabel.setText("Task description and due date must be filled in!");
-        } else {
-            Task newTask = new Task(descriptionTextField.getText(), dueDatePicker.getValue(), "Incompleted");
-
-            // Get all the items as a list, then add the new task to the list
-            tableView.getItems().add(newTask);
-            clearFields();
-        }
-    }
 
     // Method to clear data from Item Description and Date Picker
     public void clearFields() {
@@ -203,42 +235,11 @@ public class ToDoListController implements Initializable {
     public void removeButtonClicked() {
         errorLabel.setVisible(false);
 
-        if(tableView.getSelectionModel().isEmpty()){
-            errorLabel.setVisible(true);
-            errorLabel.setText("Select task to remove!");
-        }
-        else {
-            tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
+        if(!observableTaskList.isEmpty()){
+            observableTaskList.removeAll(tableView.getSelectionModel().getSelectedItem());
             tableView.getSelectionModel().clearSelection();
         }
     }
-
-
-//    // Method to go back to the ListManager Scene
-//    public void submitButtonClicked() {
-//
-//    }
-
-
-//    public ObservableList<Task> getAllTableViewItems(){
-//        return tableView.getItems();
-//    }
-//
-//    public void viewAllTasksMenuItemClicked() {
-//        filter("", getAllTableViewItems());
-//
-//
-//    }
-//
-//    public void viewCompletedTasksMenuItemClicked() {
-//        filter("Completed", getAllTableViewItems());
-//
-//    }
-//
-//    public void viewIncompletedTasksMenuItemClicked() {
-//        filter("Incompleted", getAllTableViewItems());
-//
-//    }
 
 
     // Method to return an ObservableList of Task Objects
@@ -255,34 +256,6 @@ public class ToDoListController implements Initializable {
         return task;
     }
 
-//    public void filter(String searchValue, ObservableList<Task> dataList) {
-//
-//        FilteredList<Task> filteredData = new FilteredList<>(dataList, b -> true);
-//
-//        filteredData.setPredicate(task -> {
-//            // If filter text is empty, display all persons.
-//            if (searchValue == null || searchValue.isEmpty()) {
-//                return true;
-//            }
-//
-//            if (task.getStatus().indexOf(searchValue) != -1)
-//                return true; // Filter matches first name.
-//            else
-//                return false; // Does not match.
-//        });
-//
-//        // 3. Wrap the FilteredList in a SortedList.
-//        SortedList<Task> sortedData = new SortedList<>(filteredData);
-//
-//        // 4. Bind the SortedList comparator to the TableView comparator.
-//        // 	  Otherwise, sorting the TableView would have no effect.
-//        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
-//
-//        // 5. Add sorted (and filtered) data to the table.
-//        tableView.setItems(sortedData);
-//    }
-
-
     public void onEditStatus(TableColumn.CellEditEvent<Task, String> taskStringCellEditEvent) {
         Task selectedTask = tableView.getSelectionModel().getSelectedItem();
         selectedTask.setStatus(taskStringCellEditEvent.getNewValue());
@@ -295,6 +268,7 @@ public class ToDoListController implements Initializable {
 
         clearFieldsButton.setDisable(false);
         updateTaskButton.setDisable(false);
+        removeButton.setDisable(false);
     }
 
     public void updateTaskButtonClicked() {
@@ -311,4 +285,33 @@ public class ToDoListController implements Initializable {
     public void clearFieldsButtonClicked(){
         clearFields();
     }
+
+    public void closeApp(){
+        Alert exitAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        Stage stage = (Stage) menuBar.getScene().getWindow();
+        exitAlert.setTitle("Exit Application");
+        exitAlert.setHeaderText("Are you sure you want to exit?");
+        exitAlert.initModality(Modality.APPLICATION_MODAL);
+        exitAlert.initOwner(stage);
+        exitAlert.showAndWait();
+
+        if(exitAlert.getResult() == ButtonType.OK) {
+            Platform.exit();
+        }
+        else {
+            exitAlert.close();
+        }
+    }
+
+    public void printObservableList(ObservableList<Task> list){
+        for(int i = 0; i < list.size(); i++){
+            System.out.println(list.get(i).getTaskDescription());
+        }
+    }
+
+    public void clearObservableList(ObservableList<Task> list){
+        list.clear();
+    }
+
 }
+
