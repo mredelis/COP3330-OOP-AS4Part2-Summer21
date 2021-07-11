@@ -17,22 +17,15 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.ToDoListController">
-   <children>
       <MenuBar fx:id="menuBar" layoutY="2.0" prefHeight="40.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <menus>
-            <Menu fx:id="menuView" mnemonicParsing="false" text="File">
-               <items>
+            <Menu mnemonicParsing="false" text="File">
                   <MenuItem mnemonicParsing="false" onAction="#menuItemOpenListClicked" text="Open ToDo List" />
                   <MenuItem mnemonicParsing="false" onAction="#menuItemSaveListClicked" text="Save ToDo List" />
                   <MenuItem mnemonicParsing="false" onAction="#closeApp" text="Quit" />
-               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
-               <items>
-                  <MenuItem fx:id="menuItemGetHelp" mnemonicParsing="false" onAction="#menuItemGetHelpClicked" text="Get Help" />
-               </items>
+                  <MenuItem mnemonicParsing="false" onAction="#menuItemGetHelpClicked" text="Get Help" />
             </Menu>
-        </menus>
          <padding>
             <Insets left="10.0" top="5.0" />
          </padding>
@@ -41,16 +34,13 @@
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
-         <children>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="10.0">
-               <children>
                   <Label alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="90.0" text="View Tasks">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="viewComboBox" prefHeight="20.0" prefWidth="158.0" />
-               </children>
             </HBox>
             <TableView fx:id="tableView" onMouseClicked="#updateView">
               <columns>
@@ -63,16 +53,13 @@
                </columnResizePolicy>
             </TableView>
             <HBox alignment="CENTER" prefHeight="50.0" spacing="5.0">
-               <children>
                   <TextField fx:id="descriptionTextField" prefHeight="30.0" prefWidth="338.0" promptText="Task Description" HBox.hgrow="ALWAYS" />
                   <DatePicker fx:id="dueDatePicker" prefHeight="30.0" prefWidth="120.0" promptText="Due Date" />
                    
                   <Button mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="30.0" prefWidth="100.0" text="Add Task" />
                   <Button fx:id="updateTaskButton" layoutX="600.0" layoutY="17.0" mnemonicParsing="false" onAction="#updateTaskButtonClicked" prefHeight="30.0" prefWidth="100.0" text="Update Task" />
-               </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="10.0">
-               <children>
                   <Button fx:id="clearFieldsButton" mnemonicParsing="false" onAction="#clearFieldsButtonClicked" prefHeight="30.0" prefWidth="100.0" text="Clear Fields" />
                   <Button fx:id="clearListButton" mnemonicParsing="false" onAction="#clearListButtonClicked" prefHeight="30.0" prefWidth="100.0" text="Clear List" />
                   <Button fx:id="removeTaskButton" mnemonicParsing="false" onAction="#removeButtonClicked" prefHeight="30.0" prefWidth="100.0" text="Remove Task" />
@@ -81,9 +68,6 @@
                         <Font name="System Italic" size="13.0" />
                      </font>
                   </Label>
-               </children>
             </HBox>
-         </children>
       </VBox>
-   </children>
 </AnchorPane>
