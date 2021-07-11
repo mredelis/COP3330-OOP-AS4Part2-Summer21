@@ -169,7 +169,6 @@ public class ToDoListController implements Initializable {
     }
 
     public void saveFile(ObservableList<Task> tasksList, File file) {
-
         try {
             // create a writer
             BufferedWriter outWriter = new BufferedWriter(new FileWriter(file));
@@ -178,8 +177,6 @@ public class ToDoListController implements Initializable {
                 outWriter.write(task.convertToString());
                 outWriter.newLine();
             }
-
-            System.out.println(tasksList);
 
             outWriter.close();
 
