@@ -1,2 +1,7 @@
 Buy round trip flight tickets to Lima,2021-07-03,Completed
-Reserve hotel room,2021-07-04,Incompleted
+Reserve hotel room,2021-07-04,Completed
+Buy round trip flight tickets from Lima to Cuzco,2021-07-08,Completed
+Flight to Lima,2021-08-13,Incompleted
+Flight to Cuzco,2021-08-15,Incompleted
+Train to Machu Picchu,2021-08-16,Incompleted
+Tour to Rainbow Mountain,2021-08-18,Incompleted

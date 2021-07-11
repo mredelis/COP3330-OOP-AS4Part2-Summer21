@@ -150,9 +150,6 @@ public class ToDoListController implements Initializable {
             e.printStackTrace();
         }
 
-        // For Testing
-        printObservableList(tempTasksList);
-
         return tempTasksList;
     }
 
@@ -161,7 +158,6 @@ public class ToDoListController implements Initializable {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text file", "*.txt"));
 
         File file = fileChooser.showSaveDialog(new Stage());
-//        System.out.println(file);
 
         if (file != null) {
             saveFile(observableTaskList, file);
@@ -295,6 +291,8 @@ public class ToDoListController implements Initializable {
     public void printObservableList(ObservableList<Task> list) {
         for (Task task : list) {
             System.out.println(task.getTaskDescription());
+            System.out.println(task.getDueDate());
+            System.out.println(task.getStatus());
         }
     }
 

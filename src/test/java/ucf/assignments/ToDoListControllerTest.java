@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,17 +29,12 @@ class ToDoListControllerTest {
         controller = new ToDoListController();
     }
 
+//    // Done----------------------------------------------------------------------------------------------------------------------------
 //    @Test
 //    void loadFile() {
-//        ToDoListController controller = new ToDoListController();
+//        ObservableList<Task> loadedTasks = controller.loadFile(new File("C:\\Users\\EDELITA\\Desktop\\OOPExercises\\assignment4part2\\inputFiles\\test.txt"));
 //
-//        ObservableList<Task> expResult = FXCollections.observableArrayList();
-//        expResult.add(new Task("Buy round trip flight tickets to Lima", LocalDate.of(2021, Month.JULY, 3), "Completed"));
-//        expResult.add(new Task("Reserve hotel room", LocalDate.of(2021, Month.JULY, 4), "Incompleted"));
-//
-//        ObservableList<Task> actualResult = controller.loadFile(new File("C:\\Users\\EDELITA\\Desktop\\OOPExercises\\assignment4part2\\inputFiles\\test.txt"));
-//
-//        assertEquals(expResult, actualResult);
+//        assertTrue(loadedTasks.size() == 7);
 //    }
 
 //    // Done----------------------------------------------------------------------------------------------------------------------------
