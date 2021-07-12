@@ -209,12 +209,20 @@ public class ToDoListController implements Initializable {
             errorLabel.setVisible(true);
             errorLabel.setText("Task description and due date must be filled in!");
         } else {
-            Task newTask = new Task(descriptionTextField.getText(), dueDatePicker.getValue(), "Incompleted");
 
             // Get all the items as a list, then add the new task to the list
-            observableTaskList.add(newTask);
+            addNewTask(observableTaskList, descriptionTextField.getText(), dueDatePicker.getValue());
+//            Task newTask = new Task(descriptionTextField.getText(), dueDatePicker.getValue(), "Incompleted");
+//
+//            // Get all the items as a list, then add the new task to the list
+//            observableTaskList.add(newTask);
             clearFields();
         }
+    }
+
+    public void addNewTask(ObservableList<Task> list, String taskName, LocalDate date){
+        Task newTask = new Task(taskName, date, "Incompleted");
+        list.add(newTask);
     }
 
 
@@ -223,11 +231,15 @@ public class ToDoListController implements Initializable {
         errorLabel.setVisible(false);
 
         if (!observableTaskList.isEmpty()) {
-            observableTaskList.removeAll(tableView.getSelectionModel().getSelectedItem());
+            int rowIndex = tableView.getSelectionModel().getFocusedIndex();
+            deleteTask(observableTaskList, rowIndex);
+//            observableTaskList.removeAll(tableView.getSelectionModel().getSelectedItem());
             tableView.getSelectionModel().clearSelection();
         }
+    }
 
-        printObservableList(observableTaskList);
+    public void deleteTask(ObservableList<Task> list, int rowIndex){
+        list.remove(rowIndex);
     }
 
 
@@ -298,8 +310,6 @@ public class ToDoListController implements Initializable {
     public void printObservableList(ObservableList<Task> list) {
         for (Task task : list) {
             System.out.println(task.getTaskDescription());
-            System.out.println(task.getDueDate());
-            System.out.println(task.getStatus());
         }
     }
 
@@ -307,13 +317,13 @@ public class ToDoListController implements Initializable {
     // Method to return an ObservableList of Task Objects
     public ObservableList<Task> getTasks() {
         ObservableList<Task> task = FXCollections.observableArrayList();
-        task.add(new Task("Buy round trip flight tickets to Lima", LocalDate.of(2021, Month.JULY, 3), "Completed"));
-        task.add(new Task("Reserve hotel room", LocalDate.of(2021, Month.JULY, 4), "Completed"));
-        task.add(new Task("Buy round trip flight tickets from Lima to Cuzco", LocalDate.of(2021, Month.JULY, 8), "Completed"));
-        task.add(new Task("Flight to Lima", LocalDate.of(2021, Month.AUGUST, 13), "Incompleted"));
-        task.add(new Task("Flight to Cuzco", LocalDate.of(2021, Month.AUGUST, 15), "Incompleted"));
-        task.add(new Task("Train to Machu Picchu", LocalDate.of(2021, Month.AUGUST, 16), "Incompleted"));
-        task.add(new Task("Tour to Rainbow Mountain", LocalDate.of(2021, Month.AUGUST, 18), "Incompleted"));
+        task.add(new Task("Task1", LocalDate.of(2021, Month.JULY, 3), "Completed"));
+        task.add(new Task("Task2", LocalDate.of(2021, Month.JULY, 4), "Completed"));
+        task.add(new Task("Task3", LocalDate.of(2021, Month.JULY, 8), "Completed"));
+        task.add(new Task("Task4", LocalDate.of(2021, Month.AUGUST, 13), "Incompleted"));
+        task.add(new Task("Task5", LocalDate.of(2021, Month.AUGUST, 15), "Incompleted"));
+        task.add(new Task("Task6", LocalDate.of(2021, Month.AUGUST, 16), "Incompleted"));
+        task.add(new Task("Task7", LocalDate.of(2021, Month.AUGUST, 18), "Incompleted"));
 
         return task;
     }
