@@ -2,20 +2,11 @@
 ## COP3330: Object Oriented Programming, Summer 2021
 
 # Overview
-Using IntelliJ and Gradle, you will create a GUI-based desktop application to allow a user to track their personal inventory.
+Using IntelliJ and Gradle, you will create a GUI-based desktop application to allow a user to manage multiple "todo"-type lists.
 
-The program should allow you to enter an item, a serial number, and estimated value. The program should then be able to display a tabular report of the data that looks like this:
+For [Part 1] of this assignment, you should have focused on the design elements:  UML Class Diagrams, GUI mock-ups, and pseudocode
 
-| Value          | Serial Number  |   Name       |
-|----------------|----------------|--------------|
-| $399.00        | AXB124AXY3     | Xbox One     |
-| $599.99        | S40AZBDE47     | Samsung TV   |
-
-
-The program should also allow the user to export the data as either a tab-separated value (TSV) file, or as a HTML file. When exported as an HTML file, the data should be stored inside of a table structure to mimic the displayed appearance.
-
-You will be responsible for both the design (UML diagrams) and implementation (production and test code) of this application
-
+Now that you have a completed design, [Part 2] of this assignment will focus on the implementation elements: production and test code. During this process, you will discover problems with your initial design. When these discoveries are made, you will need to go back and refine your initial design to address the problems. These changes must be included in your final submission.
 
 # How to use the Application
 
