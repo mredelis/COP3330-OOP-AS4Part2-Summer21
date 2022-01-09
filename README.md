@@ -6,9 +6,11 @@ Using IntelliJ and Gradle, you will create a GUI-based desktop application to al
 
 The program should allow you to enter an item, a serial number, and estimated value. The program should then be able to display a tabular report of the data that looks like this:
 
-Value     Serial Number   Name
-$399.00   AXB124AXY3      Xbox One
-$599.99   S40AZBDE47      Samsung TV
+| Value          | Serial Number  |   Name       |
+|----------------|----------------|--------------|
+| $399.00        | AXB124AXY3     | Xbox One     |
+| $599.99        | S40AZBDE47     | Samsung TV   |
+
 
 The program should also allow the user to export the data as either a tab-separated value (TSV) file, or as a HTML file. When exported as an HTML file, the data should be stored inside of a table structure to mimic the displayed appearance.
 
