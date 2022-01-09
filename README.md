@@ -1,7 +1,5 @@
 # How to use the Application
 
-***Per the instructions, this Application is dedicated to Rey***
-
 1. Add new item to the list
 * Enter task name in the Text Field and select due date from the Date Picker.
 * Click on the Add Task button to add the new task to the table
